@@ -388,6 +388,37 @@ function betta_show(element, show = true) {
 // -------------------------------------------------------------------------------------------------
 
 // -------------------------------------------------------------------------------------------------
+// Main Navigation Menu
+// There can only be one main navigation menu per page.
+// -------------------------------------------------------------------------------------------------
+let betta_menu = false;
+
+function betta_toggleMenu() {
+  if (betta_menu) {
+    // Close menu
+    document.querySelector('#menu-button>.material-icons-round').innerHTML = 'menu';
+
+    betta_scrollMobile();
+
+    betta_show('body>nav', false);
+
+    betta_menu = false;
+  } else {
+    // Open menu
+    document.querySelector('#menu-button>.material-icons-round').innerHTML = 'close';
+
+    betta_scrollMobile(false);
+
+    betta_show('body>nav');
+
+    betta_menu = true;
+  }
+}
+
+betta_listen(document.querySelector('#menu-button'), 'click', betta_toggleMenu);
+// -------------------------------------------------------------------------------------------------
+
+// -------------------------------------------------------------------------------------------------
 // Action Menu
 // There can only be one action menu per page.
 // -------------------------------------------------------------------------------------------------
