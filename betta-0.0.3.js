@@ -329,6 +329,7 @@ function betta_isMobile() {
 // -------------------------------------------------------------------------------------------------
 /**
  * Load Masonry, layout once images are loaded
+ * @returns a reference to the Masonry object
  * @param {string} grid
  * @param {string} item
  */
@@ -338,6 +339,8 @@ function betta_loadMasonry(grid, item) {
     columnWidth: item,
     percentPosition: true});
   msnry.reloadItems();
+
+  return msnry;
 }
 // -------------------------------------------------------------------------------------------------
 
