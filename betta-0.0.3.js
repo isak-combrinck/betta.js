@@ -316,7 +316,7 @@ function betta_loaded(selector, f) {
  * @return {boolean} true if on mobile device, false if not
  */
 function betta_isMobile() {
-  let width = (window.innerWidth > 0) ? window.innerWidth : screen.width;
+  const width = (window.innerWidth > 0) ? window.innerWidth : screen.width;
   if (width <= 800) {
     return true;
   } else {
@@ -329,7 +329,7 @@ function betta_isMobile() {
 // -------------------------------------------------------------------------------------------------
 /**
  * Load Masonry, layout once images are loaded
- * @returns a reference to the Masonry object
+ * @return a reference to the Masonry object
  * @param {string} grid
  * @param {string} item
  */
@@ -481,5 +481,26 @@ function betta_email(email) {
  */
 function betta_call(number) {
   window.open(`tel:${number}`, '_self');
+}
+// -------------------------------------------------------------------------------------------------
+
+// -------------------------------------------------------------------------------------------------
+// Clear form file input
+// -------------------------------------------------------------------------------------------------
+/**
+ * Clear the files selected to be uploaded in a form file input field
+ * NOTE: Element calling the clear must be the next sibling of the input element to be cleared
+ * NOT CRITICAL, errors may be ignored
+ * @param {event} event
+ */
+function betta_clearFileInput(event) {
+  const fileInputElement = event.target.parentNode.previousElementSibling;
+  if (fileInputElement.value) {
+    try {
+      fileInputElement.value = '';
+    } catch (error) {
+      // Prevents errors from interrupting execution
+    }
+  }
 }
 // -------------------------------------------------------------------------------------------------
