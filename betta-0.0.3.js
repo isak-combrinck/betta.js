@@ -484,23 +484,49 @@ function betta_call(number) {
 }
 // -------------------------------------------------------------------------------------------------
 
-// -------------------------------------------------------------------------------------------------
-// Clear form file input
-// -------------------------------------------------------------------------------------------------
 /**
  * Clear the files selected to be uploaded in a form file input field
  * NOTE: Element calling the clear must be the next sibling of the input element to be cleared
  * NOT CRITICAL, errors may be ignored
  * @param {event} event
+ * @return {boolean} that reflects success/failure of function
  */
 function betta_clearFileInput(event) {
   const fileInputElement = event.target.parentNode.previousElementSibling;
   if (fileInputElement.value) {
     try {
       fileInputElement.value = '';
+      betta_callChangeEvent(fileInputElement);
+
+      return true;
     } catch (error) {
-      // Prevents errors from interrupting execution
+      // Form file input could not be cleared
     }
   }
+
+  return false;
 }
-// -------------------------------------------------------------------------------------------------
+
+/**
+ * Call change event on element
+ * @param {element} element
+ * @return {boolean} that reflects success/failure of function
+ */
+function betta_callChangeEvent(element) {
+  try {
+    if ('createEvent' in document) {
+      const event = document.createEvent('HTMLEvents');
+      event.initEvent('change', false, true);
+      element.dispatchEvent(event);
+    } else {
+      element.fireEvent('onchange');
+    }
+
+    return true;
+  } catch (error) {
+    // Change event could not be called
+  }
+
+  return false;
+}
+
