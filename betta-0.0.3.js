@@ -486,13 +486,16 @@ function betta_call(number) {
 
 /**
  * Clear the files selected to be uploaded in a form file input field
- * NOTE: Element calling the clear must be the next sibling of the input element to be cleared
- * NOT CRITICAL, errors may be ignored
+ * NOTE: Element calling the clear must be a next sibling of the input element to be cleared
  * @param {event} event
  * @return {boolean} that reflects success/failure of function
  */
 function betta_clearFileInput(event) {
-  const fileInputElement = event.target.parentNode.previousElementSibling;
+  // Get the button element, even if click was on icon
+  const button = betta_elementOrClosestParentOfType(event.target, 'BUTTON');
+  // Get the previous sibling that is an input field
+  const fileInputElement = betta_previousSiblingElementOfType(button, 'INPUT');
+
   if (fileInputElement.value) {
     try {
       fileInputElement.value = '';
@@ -530,3 +533,48 @@ function betta_callChangeEvent(element) {
   return false;
 }
 
+/**
+ * Get previous sibling element of specified type
+ * @param {element} element the element to start the search from
+ * @param {string} type the type of element to search for
+ * @return {element} element, if present, otherwise null
+ */
+function betta_previousSiblingElementOfType(element, type) {
+  try {
+    while (element.previousElementSibling != null) {
+      if (element.previousElementSibling.nodeName == type) {
+        return element.previousElementSibling;
+      } else {
+        element = element.previousElementSibling;
+      }
+    }
+  } catch (error) {
+    // Could not search for element
+  }
+  // Element not found
+  return null;
+}
+
+/**
+ * Get the next element of a specified type, starting at the element provided
+ * Can be used to get the button even if a click was on child element
+ * NOTE: search includes the the element provided
+ * @param {element} element the element to start the search with
+ * @param {string} type the type of element to look for
+ * @return {element} element, if found, otherwise null
+ */
+function betta_elementOrClosestParentOfType(element, type) {
+  try {
+    while (element != null) {
+      if (element.nodeName == 'BUTTON') {
+        return element;
+      } else {
+        element = element.parentNode;
+      }
+    }
+  } catch (error) {
+    // Could not search for element
+  }
+  // Element not found
+  return null;
+}
