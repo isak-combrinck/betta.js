@@ -108,46 +108,51 @@ function betta_lightboxBack() {
  * @param {event} e
  */
 function betta_lightboxOpen(e) {
-  if (!betta_lightboxIsOpen) {
-    betta_lightboxIsOpen = true;
-    localStorage.setItem('betta_lightboxIsOpen', betta_lightboxIsOpen);
-
-    betta_lightboxSetImage($(e.target).siblings('.photo').attr('id'));
-
-    $('.lightbox').addClass('open');
-    betta_scroll(false);
-
-    // Close lightbox
-    document.addEventListener('keydown', (event) => {
-      if (event.keyCode == 27) {
-        betta_lightboxClose();
-        event.preventDefault();
-      }
-    });
-
-    // Toggle caption
-    document.addEventListener('keydown', (event) => {
-      if (event.keyCode == 32) {
-        betta_lightboxToggleCaption();
-        event.preventDefault();
-      }
-    });
-
-    // Add listener to document for left arrow
-    document.addEventListener('keydown', (event) => {
-      if (event.keyCode == 37) {
-        betta_lightboxBack();
-        event.preventDefault();
-      }
-    });
-
-    // Add listener to document for right arrow
-    document.addEventListener('keydown', (event) => {
-      if (event.keyCode == 39) {
-        betta_lightboxForward();
-        event.preventDefault();
-      }
-    });
+  if (betta_isMobile()) {
+    // On mobile no lightbox is opened, instead caption is displayed
+    betta_overlayCaption(e);
+  } else {
+    if (!betta_lightboxIsOpen) {
+      betta_lightboxIsOpen = true;
+      localStorage.setItem('betta_lightboxIsOpen', betta_lightboxIsOpen);
+  
+      betta_lightboxSetImage($(e.target).siblings('.photo').attr('id'));
+  
+      $('.lightbox').addClass('open');
+      betta_scroll(false);
+  
+      // Close lightbox
+      document.addEventListener('keydown', (event) => {
+        if (event.keyCode == 27) {
+          betta_lightboxClose();
+          event.preventDefault();
+        }
+      });
+  
+      // Toggle caption
+      document.addEventListener('keydown', (event) => {
+        if (event.keyCode == 32) {
+          betta_lightboxToggleCaption();
+          event.preventDefault();
+        }
+      });
+  
+      // Add listener to document for left arrow
+      document.addEventListener('keydown', (event) => {
+        if (event.keyCode == 37) {
+          betta_lightboxBack();
+          event.preventDefault();
+        }
+      });
+  
+      // Add listener to document for right arrow
+      document.addEventListener('keydown', (event) => {
+        if (event.keyCode == 39) {
+          betta_lightboxForward();
+          event.preventDefault();
+        }
+      });
+    }
   }
 }
 
@@ -213,6 +218,26 @@ function betta_lightboxToggleCaption() {
     betta_lightboxOpenCaption();
   } else {
     betta_lightboxCloseCaption();
+  }
+}
+
+/**
+ * Overlay caption on image
+ * @param {event} e the click event on the click-plane
+ */
+ function betta_overlayCaption(e) {
+  let clickPlane = betta_elementOrClosestParentOfType(e.target, 'DIV');
+
+  if (clickPlane.classList.contains('caption')) {
+    clickPlane.classList.remove('caption');
+    clickPlane.innerHTML = '';
+    return null;
+  } else {
+    let id = betta_previousSiblingElementOfType(e.target, 'PICTURE').getAttribute('id');
+    let caption = document.getElementById(id).querySelector('img').getAttribute('alt');
+    clickPlane.classList.add('caption');
+    clickPlane.innerHTML = '<p>'+caption+'</p>';
+    return clickPlane;
   }
 }
 
@@ -316,7 +341,7 @@ function betta_loaded(selector, f) {
  * @return {boolean} true if on mobile device, false if not
  */
 function betta_isMobile() {
-  const width = (window.innerWidth > 0) ? window.innerWidth : screen.width;
+  let width = (window.innerWidth > 0) ? window.innerWidth : screen.width;
   if (width <= 800) {
     return true;
   } else {
@@ -566,7 +591,7 @@ function betta_previousSiblingElementOfType(element, type) {
 function betta_elementOrClosestParentOfType(element, type) {
   try {
     while (element != null) {
-      if (element.nodeName == 'BUTTON') {
+      if (element.nodeName == type) {
         return element;
       } else {
         element = element.parentNode;
