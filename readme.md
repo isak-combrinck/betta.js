@@ -1,4 +1,4 @@
-# betta.cjs
+# betta.js
 
 *A project by Isak and Dahman.*
 
