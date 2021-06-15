@@ -424,7 +424,7 @@ let betta_menu = false;
 function betta_toggleMenu() {
   if (betta_menu) {
     // Close menu
-    document.querySelector('#menu-button>.material-icons-round').innerHTML = 'menu';
+    document.querySelector('#menu-button>.material-icons-round').innerHTML = '<img src="/icons/menu.svg" alt="Menu">';
 
     betta_scrollMobile();
 
@@ -433,7 +433,7 @@ function betta_toggleMenu() {
     betta_menu = false;
   } else {
     // Open menu
-    document.querySelector('#menu-button>.material-icons-round').innerHTML = 'close';
+    document.querySelector('#menu-button>.material-icons-round').innerHTML = '<img src="/icons/close.svg" alt="Close">';
 
     betta_scrollMobile(false);
 
