@@ -1,3 +1,5 @@
+/* eslint-disable no-unused-vars */
+
 /* ---------------------------------------
 Betta JavaScript
 
@@ -53,19 +55,33 @@ function betta_lightboxSetButtons() {
   document.getElementById('forward').disabled = false;
   document.getElementById('back').disabled = false;
 
-  if (document.getElementById(betta_lightboxId.split('-')[0] + '-' +
-  (parseInt(betta_lightboxId.split('-')[1]) - 1)) == null) {
+  if (
+    document.getElementById(
+        betta_lightboxId.split('-')[0] +
+        '-' +
+        (parseInt(betta_lightboxId.split('-')[1]) - 1),
+    ) == null
+  ) {
     document.getElementById('back').disabled = true;
   } else {
-    betta_lightboxIdBack = betta_lightboxId.split('-')[0] + '-' +
+    betta_lightboxIdBack =
+      betta_lightboxId.split('-')[0] +
+      '-' +
       (parseInt(betta_lightboxId.split('-')[1]) - 1);
   }
 
-  if (document.getElementById(betta_lightboxId.split('-')[0] + '-' +
-    (parseInt(betta_lightboxId.split('-')[1]) + 1)) == null) {
+  if (
+    document.getElementById(
+        betta_lightboxId.split('-')[0] +
+        '-' +
+        (parseInt(betta_lightboxId.split('-')[1]) + 1),
+    ) == null
+  ) {
     document.getElementById('forward').disabled = true;
   } else {
-    betta_lightboxIdForward = betta_lightboxId.split('-')[0] + '-' +
+    betta_lightboxIdForward =
+      betta_lightboxId.split('-')[0] +
+      '-' +
       (parseInt(betta_lightboxId.split('-')[1]) + 1);
   }
 }
@@ -76,9 +92,13 @@ function betta_lightboxSetButtons() {
  */
 function betta_lightboxSetImage(image_id) {
   betta_lightboxId = image_id;
-  betta_lightboxSrc = document.getElementById(betta_lightboxId).querySelector('img').currentSrc;
-  betta_lightboxCaption =
-    document.getElementById(betta_lightboxId).querySelector('img').getAttribute('alt');
+  betta_lightboxSrc = document
+      .getElementById(betta_lightboxId)
+      .querySelector('img').currentSrc;
+  betta_lightboxCaption = document
+      .getElementById(betta_lightboxId)
+      .querySelector('img')
+      .getAttribute('alt');
 
   betta_lightboxSetCaptionBtn(betta_lightboxCaption);
 
@@ -115,12 +135,12 @@ function betta_lightboxOpen(e) {
     if (!betta_lightboxIsOpen) {
       betta_lightboxIsOpen = true;
       localStorage.setItem('betta_lightboxIsOpen', betta_lightboxIsOpen);
-  
+
       betta_lightboxSetImage($(e.target).siblings('.photo').attr('id'));
-  
+
       $('.lightbox').addClass('open');
       betta_scroll(false);
-  
+
       // Close lightbox
       document.addEventListener('keydown', (event) => {
         if (event.keyCode == 27) {
@@ -128,7 +148,7 @@ function betta_lightboxOpen(e) {
           event.preventDefault();
         }
       });
-  
+
       // Toggle caption
       document.addEventListener('keydown', (event) => {
         if (event.keyCode == 32) {
@@ -136,7 +156,7 @@ function betta_lightboxOpen(e) {
           event.preventDefault();
         }
       });
-  
+
       // Add listener to document for left arrow
       document.addEventListener('keydown', (event) => {
         if (event.keyCode == 37) {
@@ -144,7 +164,7 @@ function betta_lightboxOpen(e) {
           event.preventDefault();
         }
       });
-  
+
       // Add listener to document for right arrow
       document.addEventListener('keydown', (event) => {
         if (event.keyCode == 39) {
@@ -224,36 +244,55 @@ function betta_lightboxToggleCaption() {
 /**
  * Overlay caption on image
  * @param {event} e the click event on the click-plane
+ * @return {HTMLElement} returns the click pane, null on error
  */
- function betta_overlayCaption(e) {
-  let clickPlane = betta_elementOrClosestParentOfType(e.target, 'DIV');
+function betta_overlayCaption(e) {
+  const clickPlane = betta_elementOrClosestParentOfType(e.target, 'DIV');
 
   if (clickPlane.classList.contains('caption')) {
     clickPlane.classList.remove('caption');
     clickPlane.innerHTML = '';
     return null;
   } else {
-    let id = betta_previousSiblingElementOfType(e.target, 'PICTURE').getAttribute('id');
-    let caption = document.getElementById(id).querySelector('img').getAttribute('alt');
+    const id = betta_previousSiblingElementOfType(
+        e.target,
+        'PICTURE',
+    ).getAttribute('id');
+    const caption = document
+        .getElementById(id)
+        .querySelector('img')
+        .getAttribute('alt');
     clickPlane.classList.add('caption');
-    clickPlane.innerHTML = '<p>'+caption+'</p>';
+    clickPlane.innerHTML = '<p>' + caption + '</p>';
     return clickPlane;
   }
 }
 
 // Open when clicking on image
-betta_listen(document.querySelectorAll('.gallery-item>.content>.click-plane'), 'click', betta_lightboxOpen);
+betta_listen(
+    document.querySelectorAll('.gallery-item>.content>.click-plane'),
+    'click',
+    betta_lightboxOpen,
+);
 
 // Close button
 betta_listen(document.getElementById('close'), 'click', betta_lightboxClose);
 // Passing to a function that doesn't accept parameters
 
 // Toggle caption button
-betta_listen(document.getElementById('caption'), 'click', betta_lightboxToggleCaption);
+betta_listen(
+    document.getElementById('caption'),
+    'click',
+    betta_lightboxToggleCaption,
+);
 // Passing to a function that doesn't accept parameters
 
 // Forward button
-betta_listen(document.getElementById('forward'), 'click', betta_lightboxForward);
+betta_listen(
+    document.getElementById('forward'),
+    'click',
+    betta_lightboxForward,
+);
 // Passing to a function that doesn't accept parameters
 
 // Back button
@@ -341,7 +380,7 @@ function betta_loaded(selector, f) {
  * @return {boolean} true if on mobile device, false if not
  */
 function betta_isMobile() {
-  let width = (window.innerWidth > 0) ? window.innerWidth : screen.width;
+  const width = window.innerWidth > 0 ? window.innerWidth : screen.width;
   if (width <= 800) {
     return true;
   } else {
@@ -357,12 +396,14 @@ function betta_isMobile() {
  * @return a reference to the Masonry object
  * @param {string} grid
  * @param {string} item
+ * @return {object} masonry object
  */
 function betta_loadMasonry(grid, item) {
   const msnry = new Masonry(grid, {
     itemSelector: item,
     columnWidth: item,
-    percentPosition: true});
+    percentPosition: true,
+  });
   msnry.reloadItems();
 
   return msnry;
@@ -421,10 +462,14 @@ function betta_show(element, show = true) {
 // -------------------------------------------------------------------------------------------------
 let betta_menu = false;
 
+/**
+ * Toggle the menu
+ */
 function betta_toggleMenu() {
   if (betta_menu) {
     // Close menu
-    document.querySelector('#menu-button>.material-icons-round').innerHTML = '<img src="/icons/menu.svg" alt="Menu">';
+    document.querySelector('#menu-button>.material-icons-round').innerHTML =
+      '<img src="/icons/menu.svg" alt="Menu">';
 
     betta_scrollMobile();
 
@@ -433,7 +478,8 @@ function betta_toggleMenu() {
     betta_menu = false;
   } else {
     // Open menu
-    document.querySelector('#menu-button>.material-icons-round').innerHTML = '<img src="/icons/close.svg" alt="Close">';
+    document.querySelector('#menu-button>.material-icons-round').innerHTML =
+      '<img src="/icons/close.svg" alt="Close">';
 
     betta_scrollMobile(false);
 
@@ -458,9 +504,12 @@ let betta_actionMenu = false;
 function betta_toggleActionMenu() {
   if (betta_actionMenu) {
     // Close action menu
-    document.querySelector('.betta_action-menu>button>.material-icons-round').innerHTML =
-      'connect_without_contact';
-    document.querySelector('.betta_action-menu>.blur-pane').removeEventListener('click', betta_toggleActionMenu);
+    document.querySelector(
+        '.betta_action-menu>button>.material-icons-round',
+    ).innerHTML = 'connect_without_contact';
+    document
+        .querySelector('.betta_action-menu>.blur-pane')
+        .removeEventListener('click', betta_toggleActionMenu);
 
     betta_scrollMobile();
 
@@ -470,8 +519,14 @@ function betta_toggleActionMenu() {
     betta_actionMenu = false;
   } else {
     // Open action menu
-    document.querySelector('.betta_action-menu>button>.material-icons-round').innerHTML = 'close';
-    betta_listen(document.querySelector('.betta_action-menu>.blur-pane'), 'click', betta_toggleActionMenu);
+    document.querySelector(
+        '.betta_action-menu>button>.material-icons-round',
+    ).innerHTML = 'close';
+    betta_listen(
+        document.querySelector('.betta_action-menu>.blur-pane'),
+        'click',
+        betta_toggleActionMenu,
+    );
 
     betta_scrollMobile(false);
 
@@ -482,7 +537,11 @@ function betta_toggleActionMenu() {
   }
 }
 
-betta_listen(document.querySelectorAll('.betta_action-menu>button'), 'click', betta_toggleActionMenu);
+betta_listen(
+    document.querySelectorAll('.betta_action-menu>button'),
+    'click',
+    betta_toggleActionMenu,
+);
 // -------------------------------------------------------------------------------------------------
 
 // -------------------------------------------------------------------------------------------------
