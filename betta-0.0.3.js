@@ -218,7 +218,7 @@ function betta_lightboxSetCaptionBtn(caption) {
 function betta_lightboxOpenCaption() {
   betta_lightboxCaptionOpen = true;
   $('.lightbox .middle .caption').addClass('open');
-  $('#caption>.icon>img').attr('src', '/icons/betta.icons/icons/subtitles_off.svg');
+  $('#caption>.icon>img').attr('src', '/icons/subtitles_off.svg');
 }
 
 /**
@@ -227,7 +227,7 @@ function betta_lightboxOpenCaption() {
 function betta_lightboxCloseCaption() {
   betta_lightboxCaptionOpen = false;
   $('.lightbox .middle .caption').removeClass('open');
-  $('#caption>.icon>img').attr('src', '/icons/betta.icons/icons/subtitles.svg');
+  $('#caption>.icon>img').attr('src', '/icons/subtitles.svg');
 }
 
 /**
