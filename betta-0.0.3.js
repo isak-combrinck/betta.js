@@ -351,6 +351,10 @@ function betta_addListeners(element, e, f) {
 /**
  * Call a function once all elements are loaded
  * (works for picture elements but you have to select the nest img)
+ * Note: calling it on all img elements on a page can cause problems,
+ * e.g., betta uses an empty img element for the its lightbox, meaning
+ * that the loaded function will not trigger, even after all images are
+ * loaded.
  * @param {string} selector
  * @param {function} f
  */
