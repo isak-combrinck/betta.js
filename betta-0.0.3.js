@@ -289,14 +289,14 @@ betta_listen(
 
 // Forward button
 betta_listen(
-    document.getElementById('forward'),
+    document.querySelector('.lightbox #forward'),
     'click',
     betta_lightboxForward,
 );
 // Passing to a function that doesn't accept parameters
 
 // Back button
-betta_listen(document.getElementById('back'), 'click', betta_lightboxBack);
+betta_listen(document.querySelector('.lightbox #back'), 'click', betta_lightboxBack);
 // Passing to a function that doesn't accept parameters
 
 // -------------------------------------------------------------------------------------------------
