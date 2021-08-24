@@ -374,6 +374,36 @@ function betta_loaded(selector, f) {
     elementsAmount++;
   });
 }
+
+/**
+ * Call a function repeatedly as items are progressively loaded
+ * (works for picture elements but you have to select the nest img)
+ * Note: calling it on all img elements on a page can cause problems,
+ * e.g., betta uses an empty img element for the its lightbox, meaning
+ * that the loaded function will not trigger, even after all images are
+ * loaded.
+ * @param {string} selector
+ * @param {function} f
+ * @param {int} n how frequently to call function, default is after every loaded item
+ */
+function betta_loadedProgressive(selector, f, n = 4) {
+  const elements = document.querySelectorAll(selector);
+  let elementsAmount = 0;
+  let i = 1;
+  let progress = 1;
+
+  elements.forEach((element) => {
+    element.addEventListener('load', function() {
+      i++;
+      if ((i == progress + n) || (i == elementsAmount)) {
+        progress = i;
+        f();
+      }
+    });
+
+    elementsAmount++;
+  });
+}
 // -------------------------------------------------------------------------------------------------
 
 // -------------------------------------------------------------------------------------------------
