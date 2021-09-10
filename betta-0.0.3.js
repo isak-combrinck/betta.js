@@ -696,3 +696,42 @@ function betta_elementOrClosestParentOfType(element, type) {
   // Element not found
   return null;
 }
+
+/**
+ * Change theme
+ */
+ function betta_changeTheme() {
+  try {
+    if (document.body.classList.contains('dark')) {
+      betta_show('#loader', true);
+
+      document.body.classList.remove('dark');
+
+      document.querySelector('#betta_theme-button>.icon').innerHTML =
+      '<img src="/icons/dark_mode.svg" alt="Switch Theme" />';
+
+      setTimeout(function(){
+        betta_show('#loader', false);
+      }, 750);
+      return true;
+    } else {
+      betta_show('#loader', true);
+
+      document.body.classList.add('dark');
+
+      document.querySelector('#betta_theme-button>.icon').innerHTML =
+      '<img src="/icons/dark_mode_white.svg" alt="Switch Theme" />';
+
+      setTimeout(function(){
+        betta_show('#loader', false);
+      }, 750);
+      return true;
+    }
+  } catch (error) {
+    // Could not change theme
+  }
+  // Could not change theme
+  return null;
+}
+
+betta_listen(document.getElementById('betta_theme-button'), 'click', betta_changeTheme);
