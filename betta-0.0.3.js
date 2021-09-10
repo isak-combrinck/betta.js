@@ -708,7 +708,7 @@ function betta_elementOrClosestParentOfType(element, type) {
       document.body.classList.remove('dark');
 
       document.querySelector('#betta_theme-button>.icon').innerHTML =
-      '<img src="/icons/dark_mode.svg" alt="Switch Theme" />';
+      '<img src="/icons/dark_mode.svg" alt="Switch theme" />';
 
       setTimeout(function(){
         betta_show('#loader', false);
@@ -720,7 +720,7 @@ function betta_elementOrClosestParentOfType(element, type) {
       document.body.classList.add('dark');
 
       document.querySelector('#betta_theme-button>.icon').innerHTML =
-      '<img src="/icons/dark_mode_white.svg" alt="Switch Theme" />';
+      '<img src="/icons/light_mode_white.svg" alt="Switch theme" />';
 
       setTimeout(function(){
         betta_show('#loader', false);
