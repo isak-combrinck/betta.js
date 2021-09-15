@@ -491,6 +491,24 @@ function betta_show(element, show = true) {
 // -------------------------------------------------------------------------------------------------
 
 // -------------------------------------------------------------------------------------------------
+// Hide
+// -------------------------------------------------------------------------------------------------
+/**
+ * Add hide class, remove if optional bool is passed
+ * @param {element} element
+ * @param {boolean} hide
+ */
+ function betta_hide(element, hide = true) {
+  if (hide) {
+    element.classList.add('hide');
+  } else {
+    element.classList.remove('hide');
+  }
+}
+
+// -------------------------------------------------------------------------------------------------
+
+// -------------------------------------------------------------------------------------------------
 // Main Navigation Menu
 // There can only be one main navigation menu per page.
 // -------------------------------------------------------------------------------------------------
@@ -733,3 +751,78 @@ function betta_elementOrClosestParentOfType(element, type) {
 }
 
 betta_listen(document.getElementById('betta_theme-button'), 'click', betta_changeTheme);
+
+// -------------------------------------------------------------------------------------------------
+// Image Strip
+// -------------------------------------------------------------------------------------------------
+
+/**
+   * Image strip state updating
+   * @param {element} element
+   * @param {number} scrollPosition
+   */
+ function betta_imageStripState(element, scrollPosition, length) {
+  if (scrollPosition < 10) {
+    betta_hide(element.querySelector('button.back'), true);
+    return true;
+  } else if (scrollPosition > 0) {
+    betta_hide(element.querySelector('button.back'), false);
+  }
+
+  if (scrollPosition >= 2 * (element.scrollWidth / length) - 10) {
+    betta_hide(element.querySelector('button.forward'), true);
+    return true;
+  } else if (scrollPosition <= 2 * (element.scrollWidth / length) - 10) {
+    betta_hide(element.querySelector('button.forward'), false);
+  }
+}
+
+/**
+ * Image strip scroll right
+ * @param {event} e
+ */
+function betta_scrollRight(e) {
+  let imageStrip = betta_elementOrClosestParentOfType(e.target, "BUTTON")
+      .parentElement.parentElement,
+    scrollPosition = imageStrip.scrollLeft,
+    imageStripLength = imageStrip.childElementCount - 2;
+
+  if ((scrollPosition += imageStrip.scrollWidth / imageStripLength) > imageStrip.scrollWidth) {
+    scrollPosition = imageStrip.scrollWidth;
+  }
+
+  imageStrip.scroll({
+    top: 0,
+    left: scrollPosition,
+    behavior: "smooth",
+  });
+
+  betta_imageStripState(imageStrip, scrollPosition, imageStripLength);
+}
+
+/**
+ * Image strip scroll left
+ * @param {event} e
+ */
+function betta_scrollLeft(e) {
+  let imageStrip = betta_elementOrClosestParentOfType(e.target, "BUTTON")
+      .parentElement.parentElement,
+    scrollPosition = imageStrip.scrollLeft,
+    imageStripLength = imageStrip.childElementCount - 2;
+
+  if ((scrollPosition -= imageStrip.scrollWidth / imageStripLength) < 0) {
+    scrollPosition = 0;
+  }
+
+  imageStrip.scroll({
+    top: 0,
+    left: scrollPosition,
+    behavior: "smooth",
+  });
+
+  betta_imageStripState(imageStrip, scrollPosition, imageStripLength);
+}
+
+betta_listen(document.querySelectorAll(".betta_image-strip .back"), "click", betta_scrollLeft);
+betta_listen(document.querySelectorAll(".betta_image-strip .forward"), "click", betta_scrollRight);
+// -------------------------------------------------------------------------------------------------
