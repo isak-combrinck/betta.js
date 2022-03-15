@@ -876,3 +876,31 @@ function betta_callCancel(e) {
   btn.style.display = 'none';
 }
 // -------------------------------------------------------------------------------------------------
+
+// -------------------------------------------------------------------------------------------------
+// Switch Picture
+// -------------------------------------------------------------------------------------------------
+/**
+ * Switch to secondary picture
+ * @param {event} e
+ */
+function betta_switchPicture(e) {
+  const btn = betta_elementOrClosestParentOfType(e.target, 'BUTTON');
+  const alt = btn.nextElementSibling.querySelector('.alt');
+
+  if (alt.style.opacity != '1') {
+    alt.style.opacity = '1';
+    btn.querySelector('img').style.transform = 'scaleX(-1)';
+  } else {
+    alt.style.opacity = '0';
+    btn.querySelector('img').style.transform = 'scaleX(1)';
+  }
+
+}
+
+betta_listen(
+  document.querySelectorAll('.switch-picture'),
+  'click',
+  betta_switchPicture,
+);
+// -------------------------------------------------------------------------------------------------
