@@ -57,9 +57,9 @@ function betta_lightboxSetButtons() {
 
   if (
     document.getElementById(
-        betta_lightboxId.split('-')[0] +
-        '-' +
-        (parseInt(betta_lightboxId.split('-')[1]) - 1),
+      betta_lightboxId.split('-')[0] +
+      '-' +
+      (parseInt(betta_lightboxId.split('-')[1]) - 1),
     ) == null
   ) {
     document.getElementById('back').disabled = true;
@@ -72,9 +72,9 @@ function betta_lightboxSetButtons() {
 
   if (
     document.getElementById(
-        betta_lightboxId.split('-')[0] +
-        '-' +
-        (parseInt(betta_lightboxId.split('-')[1]) + 1),
+      betta_lightboxId.split('-')[0] +
+      '-' +
+      (parseInt(betta_lightboxId.split('-')[1]) + 1),
     ) == null
   ) {
     document.getElementById('forward').disabled = true;
@@ -93,12 +93,12 @@ function betta_lightboxSetButtons() {
 function betta_lightboxSetImage(image_id) {
   betta_lightboxId = image_id;
   betta_lightboxSrc = document
-      .getElementById(betta_lightboxId)
-      .querySelector('img').currentSrc;
+    .getElementById(betta_lightboxId)
+    .querySelector('img').currentSrc;
   betta_lightboxCaption = document
-      .getElementById(betta_lightboxId)
-      .querySelector('img')
-      .getAttribute('alt');
+    .getElementById(betta_lightboxId)
+    .querySelector('img')
+    .getAttribute('alt');
 
   betta_lightboxSetCaptionBtn(betta_lightboxCaption);
 
@@ -255,13 +255,13 @@ function betta_overlayCaption(e) {
     return null;
   } else {
     const id = betta_previousSiblingElementOfType(
-        e.target,
-        'PICTURE',
+      e.target,
+      'PICTURE',
     ).getAttribute('id');
     const caption = document
-        .getElementById(id)
-        .querySelector('img')
-        .getAttribute('alt');
+      .getElementById(id)
+      .querySelector('img')
+      .getAttribute('alt');
     clickPlane.classList.add('caption');
     clickPlane.innerHTML = '<p>' + caption + '</p>';
     return clickPlane;
@@ -270,9 +270,9 @@ function betta_overlayCaption(e) {
 
 // Open when clicking on image
 betta_listen(
-    document.querySelectorAll('.gallery-item>.content>.click-plane'),
-    'click',
-    betta_lightboxOpen,
+  document.querySelectorAll('.gallery-item>.content>.click-plane'),
+  'click',
+  betta_lightboxOpen,
 );
 
 // Close button
@@ -281,17 +281,17 @@ betta_listen(document.getElementById('close'), 'click', betta_lightboxClose);
 
 // Toggle caption button
 betta_listen(
-    document.getElementById('caption'),
-    'click',
-    betta_lightboxToggleCaption,
+  document.getElementById('caption'),
+  'click',
+  betta_lightboxToggleCaption,
 );
 // Passing to a function that doesn't accept parameters
 
 // Forward button
 betta_listen(
-    document.querySelector('.lightbox #forward'),
-    'click',
-    betta_lightboxForward,
+  document.querySelector('.lightbox #forward'),
+  'click',
+  betta_lightboxForward,
 );
 // Passing to a function that doesn't accept parameters
 
@@ -364,7 +364,7 @@ function betta_loaded(selector, f) {
   let i = 1;
 
   elements.forEach((element) => {
-    element.addEventListener('load', function() {
+    element.addEventListener('load', function () {
       i++;
       if (i == elementsAmount) {
         f();
@@ -393,7 +393,7 @@ function betta_loadedProgressive(selector, f, n = 4) {
   let progress = 1;
 
   elements.forEach((element) => {
-    element.addEventListener('load', function() {
+    element.addEventListener('load', function () {
       i++;
       if ((i == progress + n) || (i == elementsAmount)) {
         progress = i;
@@ -498,7 +498,7 @@ function betta_show(element, show = true) {
  * @param {element} element
  * @param {boolean} hide
  */
- function betta_hide(element, hide = true) {
+function betta_hide(element, hide = true) {
   if (hide) {
     element.classList.add('hide');
   } else {
@@ -522,6 +522,7 @@ function betta_toggleMenu() {
     // Close menu
     document.querySelector('#betta_menu-button>.icon').innerHTML =
       '<img src="/icons/menu.svg" alt="Menu">';
+    document.getElementById('betta_home-button').style.display = 'none';
 
     betta_scrollMobile();
 
@@ -532,6 +533,7 @@ function betta_toggleMenu() {
     // Open menu
     document.querySelector('#betta_menu-button>.icon').innerHTML =
       '<img src="/icons/close.svg" alt="Close">';
+    document.getElementById('betta_home-button').style.display = 'block';
 
     betta_scrollMobile(false);
 
@@ -557,11 +559,11 @@ function betta_toggleActionMenu() {
   if (betta_actionMenu) {
     // Close action menu
     document.querySelector(
-        '.betta_action-menu>button>.material-icons-round',
+      '.betta_action-menu>button>.material-icons-round',
     ).innerHTML = 'connect_without_contact';
     document
-        .querySelector('.betta_action-menu>.blur-pane')
-        .removeEventListener('click', betta_toggleActionMenu);
+      .querySelector('.betta_action-menu>.blur-pane')
+      .removeEventListener('click', betta_toggleActionMenu);
 
     betta_scrollMobile();
 
@@ -572,12 +574,12 @@ function betta_toggleActionMenu() {
   } else {
     // Open action menu
     document.querySelector(
-        '.betta_action-menu>button>.material-icons-round',
+      '.betta_action-menu>button>.material-icons-round',
     ).innerHTML = 'close';
     betta_listen(
-        document.querySelector('.betta_action-menu>.blur-pane'),
-        'click',
-        betta_toggleActionMenu,
+      document.querySelector('.betta_action-menu>.blur-pane'),
+      'click',
+      betta_toggleActionMenu,
     );
 
     betta_scrollMobile(false);
@@ -590,9 +592,9 @@ function betta_toggleActionMenu() {
 }
 
 betta_listen(
-    document.querySelectorAll('.betta_action-menu>button'),
-    'click',
-    betta_toggleActionMenu,
+  document.querySelectorAll('.betta_action-menu>button'),
+  'click',
+  betta_toggleActionMenu,
 );
 // -------------------------------------------------------------------------------------------------
 
@@ -718,7 +720,7 @@ function betta_elementOrClosestParentOfType(element, type) {
 /**
  * Change theme
  */
- function betta_changeTheme() {
+function betta_changeTheme() {
   try {
     if (document.body.classList.contains('dark')) {
       betta_show('#loader', true);
@@ -727,7 +729,7 @@ function betta_elementOrClosestParentOfType(element, type) {
 
       localStorage.setItem('dark', false);
 
-      setTimeout(function(){
+      setTimeout(function () {
         betta_show('#loader', false);
       }, 750);
       return true;
@@ -738,7 +740,7 @@ function betta_elementOrClosestParentOfType(element, type) {
 
       localStorage.setItem('dark', true);
 
-      setTimeout(function(){
+      setTimeout(function () {
         betta_show('#loader', false);
       }, 750);
       return true;
@@ -761,7 +763,7 @@ betta_listen(document.getElementById('betta_theme-button'), 'click', betta_chang
    * @param {element} element
    * @param {number} scrollPosition
    */
- function betta_imageStripState(element, scrollPosition, length) {
+function betta_imageStripState(element, scrollPosition, length) {
   if (scrollPosition < 10) {
     betta_hide(element.querySelector('button.back'), true);
     return true;
@@ -783,7 +785,7 @@ betta_listen(document.getElementById('betta_theme-button'), 'click', betta_chang
  */
 function betta_scrollRight(e) {
   let imageStrip = betta_elementOrClosestParentOfType(e.target, "BUTTON")
-      .parentElement.parentElement,
+    .parentElement.parentElement,
     scrollPosition = imageStrip.scrollLeft,
     imageStripLength = imageStrip.childElementCount - 2;
 
@@ -806,7 +808,7 @@ function betta_scrollRight(e) {
  */
 function betta_scrollLeft(e) {
   let imageStrip = betta_elementOrClosestParentOfType(e.target, "BUTTON")
-      .parentElement.parentElement,
+    .parentElement.parentElement,
     scrollPosition = imageStrip.scrollLeft,
     imageStripLength = imageStrip.childElementCount - 2;
 
