@@ -780,13 +780,6 @@ function betta_imageStripState(imageStrip, scrollPosition) {
   } else if (scrollPosition < imageStrip.scrollWidth - imageStrip.offsetWidth) {
     betta_hide(imageStrip.querySelector('button.forward'), false);
   }
-
-  // if (scrollPosition > 3 * ((element.scrollWidth / length) - 200)) {
-  //   betta_hide(element.querySelector('button.forward'));
-  //   return true;
-  // } else if (scrollPosition <= 2 * ((element.scrollWidth / length) - 10)) {
-  //   betta_hide(element.querySelector('button.forward'), false);
-  // }
 }
 
 /**
@@ -838,4 +831,48 @@ function betta_scrollLeft(e) {
 
 betta_listen(document.querySelectorAll(".betta_image-strip .back"), "click", betta_scrollLeft);
 betta_listen(document.querySelectorAll(".betta_image-strip .forward"), "click", betta_scrollRight);
+// -------------------------------------------------------------------------------------------------
+
+// -------------------------------------------------------------------------------------------------
+// Call Button
+// -------------------------------------------------------------------------------------------------
+/**
+ * Call a number
+ * @param {event} e
+ */
+function betta_call(e) {
+  let btn = betta_elementOrClosestParentOfType(e.target, "BUTTON");
+
+  if (btn.classList.contains('clicked')) {
+    window.location.href = 'tel:' + btn.nextElementSibling.innerHTML;
+  } else {
+    btn.classList.add('clicked');
+    // change icon
+    btn.querySelector('img').src = '/icons/phone.svg';
+    // show phone number
+    btn.nextElementSibling.style.display = 'block';
+    // show cancel btn
+    btn.previousElementSibling.style.display = 'block';
+    // add listener for click on cancel
+    betta_listen(btn.previousElementSibling, "click", betta_callCancel);
+  }
+}
+
+betta_listen(document.querySelectorAll("button.phone"), "click", betta_call);
+
+/**
+ * Cancel call
+ * @param {event} e
+ */
+function betta_callCancel(e) {
+  let btn = betta_elementOrClosestParentOfType(e.target, "BUTTON");
+  // change icon
+  btn.nextElementSibling.querySelector('img').src = '/icons/call_end.svg';
+  // hide phone number
+  btn.nextElementSibling.nextElementSibling.style.display = 'none';
+  // remove clicked from call btn
+  btn.nextElementSibling.classList.remove('clicked');
+  // hide cancel call btn
+  btn.style.display = 'none';
+}
 // -------------------------------------------------------------------------------------------------
