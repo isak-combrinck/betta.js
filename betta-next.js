@@ -760,23 +760,33 @@ betta_listen(document.getElementById('betta_theme-button'), 'click', betta_chang
 
 /**
    * Image strip state updating
-   * @param {element} element
+   * @param {element} imageStrip
    * @param {number} scrollPosition
    */
-function betta_imageStripState(element, scrollPosition, length) {
-  if (scrollPosition < 10) {
-    betta_hide(element.querySelector('button.back'), true);
-    return true;
+function betta_imageStripState(imageStrip, scrollPosition) {
+
+  // Determines if at start
+  if (scrollPosition == 0) {
+    betta_hide(imageStrip.querySelector('button.back'));
+    return true; // Case is clear, rest of conditions don't need to be checked
   } else if (scrollPosition > 0) {
-    betta_hide(element.querySelector('button.back'), false);
+    betta_hide(imageStrip.querySelector('button.back'), false);
   }
 
-  if (scrollPosition >= 2 * (element.scrollWidth / length) - 10) {
-    betta_hide(element.querySelector('button.forward'), true);
-    return true;
-  } else if (scrollPosition <= 2 * (element.scrollWidth / length) - 10) {
-    betta_hide(element.querySelector('button.forward'), false);
+  // Expression on right of condition defines the actual scrollable width
+  if (scrollPosition >= imageStrip.scrollWidth - imageStrip.offsetWidth) {
+    betta_hide(imageStrip.querySelector('button.forward'));
+    return true; // Case is clear, rest of conditions don't need to be checked
+  } else if (scrollPosition < imageStrip.scrollWidth - imageStrip.offsetWidth) {
+    betta_hide(imageStrip.querySelector('button.forward'), false);
   }
+
+  // if (scrollPosition > 3 * ((element.scrollWidth / length) - 200)) {
+  //   betta_hide(element.querySelector('button.forward'));
+  //   return true;
+  // } else if (scrollPosition <= 2 * ((element.scrollWidth / length) - 10)) {
+  //   betta_hide(element.querySelector('button.forward'), false);
+  // }
 }
 
 /**
@@ -786,10 +796,11 @@ function betta_imageStripState(element, scrollPosition, length) {
 function betta_scrollRight(e) {
   let imageStrip = betta_elementOrClosestParentOfType(e.target, "BUTTON")
     .parentElement.parentElement,
-    scrollPosition = imageStrip.scrollLeft,
-    imageStripLength = imageStrip.childElementCount - 2;
+    scrollPosition = imageStrip.scrollLeft;
 
-  if ((scrollPosition += imageStrip.scrollWidth / imageStripLength) > imageStrip.scrollWidth) {
+  // If scroll comes within 200px of the limit, scroll all the way right
+  if ((scrollPosition += imageStrip.scrollWidth / (imageStrip.childElementCount - 2))
+    > imageStrip.scrollWidth - imageStrip.offsetWidth - 200) {
     scrollPosition = imageStrip.scrollWidth;
   }
 
@@ -799,7 +810,7 @@ function betta_scrollRight(e) {
     behavior: "smooth",
   });
 
-  betta_imageStripState(imageStrip, scrollPosition, imageStripLength);
+  betta_imageStripState(imageStrip, scrollPosition);
 }
 
 /**
@@ -809,10 +820,10 @@ function betta_scrollRight(e) {
 function betta_scrollLeft(e) {
   let imageStrip = betta_elementOrClosestParentOfType(e.target, "BUTTON")
     .parentElement.parentElement,
-    scrollPosition = imageStrip.scrollLeft,
-    imageStripLength = imageStrip.childElementCount - 2;
+    scrollPosition = imageStrip.scrollLeft;
 
-  if ((scrollPosition -= imageStrip.scrollWidth / imageStripLength) < 0) {
+  // If scroll comes within 200px of the start, scroll all the way to the start
+  if ((scrollPosition -= imageStrip.scrollWidth / (imageStrip.childElementCount - 2)) < 200) {
     scrollPosition = 0;
   }
 
@@ -822,7 +833,7 @@ function betta_scrollLeft(e) {
     behavior: "smooth",
   });
 
-  betta_imageStripState(imageStrip, scrollPosition, imageStripLength);
+  betta_imageStripState(imageStrip, scrollPosition);
 }
 
 betta_listen(document.querySelectorAll(".betta_image-strip .back"), "click", betta_scrollLeft);
