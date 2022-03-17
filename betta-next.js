@@ -844,35 +844,60 @@ function betta_call(e) {
   let btn = betta_elementOrClosestParentOfType(e.target, "BUTTON");
 
   if (btn.classList.contains('clicked')) {
-    window.location.href = 'tel:' + btn.nextElementSibling.innerHTML;
+    btn.classList.remove('clicked');
+    btn.querySelector('img').src = '/icons/phone_enabled.svg';
+    btn.nextElementSibling.style.display = 'none';
   } else {
+    try{
+      if (btn.nextElementSibling.nextElementSibling.classList.contains('clicked')){
+        btn.nextElementSibling.nextElementSibling.classList.remove('clicked');
+        btn.nextElementSibling.nextElementSibling.querySelector('img').src = '/icons/email.svg';
+        btn.nextElementSibling.nextElementSibling.nextElementSibling.style.display = 'none';
+      }
+    }catch{}
+
     btn.classList.add('clicked');
     // change icon
-    btn.querySelector('img').src = '/icons/phone.svg';
+    btn.querySelector('img').src = '/icons/phone_disabled.svg';
     // show phone number
     btn.nextElementSibling.style.display = 'block';
-    // show cancel btn
-    btn.previousElementSibling.style.display = 'block';
-    // add listener for click on cancel
-    betta_listen(btn.previousElementSibling, "click", betta_callCancel);
+
   }
 }
 
 betta_listen(document.querySelectorAll("button.phone"), "click", betta_call);
 
+// -------------------------------------------------------------------------------------------------
+// -------------------------------------------------------------------------------------------------
+// mail Button
+// -------------------------------------------------------------------------------------------------
 /**
- * Cancel call
+ * Show email button
  * @param {event} e
  */
-function betta_callCancel(e) {
+function betta_mail(e) {
   let btn = betta_elementOrClosestParentOfType(e.target, "BUTTON");
-  // change icon
-  btn.nextElementSibling.querySelector('img').src = '/icons/call_end.svg';
-  // hide phone number
-  btn.nextElementSibling.nextElementSibling.style.display = 'none';
-  // remove clicked from call btn
-  btn.nextElementSibling.classList.remove('clicked');
-  // hide cancel call btn
-  btn.style.display = 'none';
+
+  if (btn.classList.contains('clicked')) {
+    btn.classList.remove('clicked');
+    btn.querySelector('img').src = '/icons/email.svg';
+    btn.nextElementSibling.style.display = 'none';
+  } else {
+    try{
+      if (btn.previousElementSibling.previousElementSibling.classList.contains('clicked')){
+        btn.previousElementSibling.previousElementSibling.classList.remove('clicked');
+        btn.previousElementSibling.previousElementSibling.querySelector('img').src = '/icons/phone_enabled.svg';
+        btn.previousElementSibling.style.display = 'none';
+      }
+    }catch{}
+
+    btn.classList.add('clicked');
+    // change icon
+    btn.querySelector('img').src = '/icons/mail_open.svg';
+    // show phone number
+    btn.nextElementSibling.style.display = 'block';
+
+  }
 }
-// -------------------------------------------------------------------------------------------------
+
+betta_listen(document.querySelectorAll("button.mail"), "click", betta_mail);
