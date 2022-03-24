@@ -848,13 +848,13 @@ function betta_call(e) {
     btn.querySelector('img').src = '/icons/phone_enabled.svg';
     btn.nextElementSibling.style.display = 'none';
   } else {
-    try{
-      if (btn.nextElementSibling.nextElementSibling.classList.contains('clicked')){
+    try {
+      if (btn.nextElementSibling.nextElementSibling.classList.contains('clicked')) {
         btn.nextElementSibling.nextElementSibling.classList.remove('clicked');
         btn.nextElementSibling.nextElementSibling.querySelector('img').src = '/icons/email.svg';
         btn.nextElementSibling.nextElementSibling.nextElementSibling.style.display = 'none';
       }
-    }catch{}
+    } catch { }
 
     btn.classList.add('clicked');
     // change icon
@@ -883,13 +883,13 @@ function betta_mail(e) {
     btn.querySelector('img').src = '/icons/email.svg';
     btn.nextElementSibling.style.display = 'none';
   } else {
-    try{
-      if (btn.previousElementSibling.previousElementSibling.classList.contains('clicked')){
+    try {
+      if (btn.previousElementSibling.previousElementSibling.classList.contains('clicked')) {
         btn.previousElementSibling.previousElementSibling.classList.remove('clicked');
         btn.previousElementSibling.previousElementSibling.querySelector('img').src = '/icons/phone_enabled.svg';
         btn.previousElementSibling.style.display = 'none';
       }
-    }catch{}
+    } catch { }
 
     btn.classList.add('clicked');
     // change icon
@@ -900,4 +900,4 @@ function betta_mail(e) {
   }
 }
 
-betta_listen(document.querySelectorAll("button.mail"), "click", betta_mail);
+betta_listen(document.querySelectorAll("button.email"), "click", betta_mail);
