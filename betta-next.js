@@ -865,9 +865,13 @@ function betta_call(e) {
   }
 }
 
-betta_listen(document.querySelectorAll("button.phone"), "click", betta_call);
-
+betta_listen(
+  document.querySelectorAll('button.phone'),
+  'click',
+  betta_call
+);
 // -------------------------------------------------------------------------------------------------
+
 // -------------------------------------------------------------------------------------------------
 // mail Button
 // -------------------------------------------------------------------------------------------------
@@ -900,7 +904,11 @@ function betta_mail(e) {
   }
 }
 
-betta_listen(document.querySelectorAll("button.email"), "click", betta_mail);
+betta_listen(
+  document.querySelectorAll('button.email'),
+  'click',
+  betta_mail
+);
 // -------------------------------------------------------------------------------------------------
 
 // -------------------------------------------------------------------------------------------------
@@ -911,17 +919,18 @@ betta_listen(document.querySelectorAll("button.email"), "click", betta_mail);
  * @param {event} e
  */
 function betta_switchPicture(e) {
-  const btn = betta_elementOrClosestParentOfType(e.target, 'BUTTON');
-  const alt = btn.nextElementSibling.querySelector('.alt');
+  try {
+    const btn = betta_elementOrClosestParentOfType(e.target, 'BUTTON');
+    const alt = btn.nextElementSibling.querySelector('.alt');
 
-  if (alt.style.opacity != '1') {
-    alt.style.opacity = '1';
-    btn.querySelector('img').style.transform = 'scaleX(-1)';
-  } else {
-    alt.style.opacity = '0';
-    btn.querySelector('img').style.transform = 'scaleX(1)';
-  }
-
+    if (alt.style.opacity != '1') {
+      alt.style.opacity = '1';
+      btn.querySelector('img').style.transform = 'scaleX(-1)';
+    } else {
+      alt.style.opacity = '0';
+      btn.querySelector('img').style.transform = 'scaleX(1)';
+    }
+  } catch { }
 }
 
 betta_listen(
