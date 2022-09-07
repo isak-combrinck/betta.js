@@ -939,3 +939,67 @@ betta_listen(
   betta_switchPicture,
 );
 // -------------------------------------------------------------------------------------------------
+
+// -------------------------------------------------------------------------------------------------
+// Parallax scrolling
+// -------------------------------------------------------------------------------------------------
+let parallaxElements = document.querySelectorAll('.parallax-scroll');
+
+let viewportHeight = window.innerHeight;
+let dViewportTop = window.pageYOffset;
+let dViewportBottom = dViewportTop + viewportHeight;
+
+function parallax() {
+  parallaxElements.forEach(parallaxForElement);
+}
+
+function parallaxForElement(element) {
+  let dElementTop = element.getBoundingClientRect().top + window.pageYOffset;
+
+  transformElement(element, dElementTop);
+}
+
+//let element = document.querySelector('.parallax-scroll');
+//let dElementTop = element.getBoundingClientRect().top + window.pageYOffset;
+
+function inViewport(dElementTop) {
+  if (dElementTop < dViewportBottom) {
+    if (dElementTop > dViewportTop) {
+      return true;
+    } else {
+      return false;
+    }
+  } else {
+    return false;
+  }
+}
+
+/* should only return a value 0 to 1 */
+function calculateTransform(dElementTop) {
+  return (viewportHeight / (-(dViewportTop) + dElementTop));
+}
+
+function transformElement(element, dElementTop) {
+
+  if (inViewport(dElementTop)) {
+    let t = calculateTransform(dElementTop);
+
+    if (t > 25) {
+      t = 25;
+    }
+    element.style.transform = "translateY(" + t + "px)";
+    dElementTop = element.getBoundingClientRect().top + window.pageYOffset;
+  }
+}
+
+function scroll() {
+  dViewportTop = window.pageYOffset;
+  dViewportBottom = dViewportTop + viewportHeight;
+
+  parallax();
+}
+
+window.onscroll = function () {
+  scroll();
+};
+
