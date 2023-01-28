@@ -522,7 +522,9 @@ function betta_toggleMenu() {
     // Close menu
     document.querySelector('#betta_menu-button>.icon').innerHTML =
       '<img src="/icons/menu.svg" alt="Menu">';
-    document.getElementById('betta_home-button').style.display = 'none';
+    try {
+      document.getElementById('betta_home-button').style.display = 'none';
+    } catch { }
 
     betta_scrollMobile();
 
@@ -533,7 +535,9 @@ function betta_toggleMenu() {
     // Open menu
     document.querySelector('#betta_menu-button>.icon').innerHTML =
       '<img src="/icons/close.svg" alt="Close">';
-    document.getElementById('betta_home-button').style.display = 'block';
+    try {
+      document.getElementById('betta_home-button').style.display = 'block';
+    } catch { }
 
     betta_scrollMobile(false);
 
