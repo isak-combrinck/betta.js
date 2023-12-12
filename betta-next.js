@@ -524,7 +524,9 @@ function betta_toggleMenu() {
     // Close menu
     document.querySelector('#betta_menu-button>.icon').innerHTML =
       '<img src="/icons/menu.svg" alt="Menu">';
-    document.getElementById('betta_home-button').style.display = 'none';
+    try {
+      document.getElementById('betta_home-button').style.display = 'none';
+    } catch { }
 
     betta_scrollMobile();
 
@@ -535,7 +537,9 @@ function betta_toggleMenu() {
     // Open menu
     document.querySelector('#betta_menu-button>.icon').innerHTML =
       '<img src="/icons/close.svg" alt="Close">';
-    document.getElementById('betta_home-button').style.display = 'block';
+    try {
+      document.getElementById('betta_home-button').style.display = 'block';
+    } catch { }
 
     betta_scrollMobile(false);
 
@@ -846,37 +850,71 @@ function betta_call(e) {
   let btn = betta_elementOrClosestParentOfType(e.target, "BUTTON");
 
   if (btn.classList.contains('clicked')) {
-    window.location.href = 'tel:' + btn.nextElementSibling.innerHTML;
+    btn.classList.remove('clicked');
+    btn.querySelector('img').src = '/icons/phone_enabled.svg';
+    btn.nextElementSibling.style.display = 'none';
   } else {
+    try {
+      if (btn.nextElementSibling.nextElementSibling.classList.contains('clicked')) {
+        btn.nextElementSibling.nextElementSibling.classList.remove('clicked');
+        btn.nextElementSibling.nextElementSibling.querySelector('img').src = '/icons/email.svg';
+        btn.nextElementSibling.nextElementSibling.nextElementSibling.style.display = 'none';
+      }
+    } catch { }
+
     btn.classList.add('clicked');
     // change icon
-    btn.querySelector('img').src = '/icons/phone.svg';
+    btn.querySelector('img').src = '/icons/phone_disabled.svg';
     // show phone number
     btn.nextElementSibling.style.display = 'block';
-    // show cancel btn
-    btn.previousElementSibling.style.display = 'block';
-    // add listener for click on cancel
-    betta_listen(btn.previousElementSibling, "click", betta_callCancel);
+
   }
 }
 
-betta_listen(document.querySelectorAll("button.phone"), "click", betta_call);
+betta_listen(
+  document.querySelectorAll('button.phone'),
+  'click',
+  betta_call
+);
+// -------------------------------------------------------------------------------------------------
 
+// -------------------------------------------------------------------------------------------------
+// mail Button
+// -------------------------------------------------------------------------------------------------
 /**
- * Cancel call
+ * Show email button
  * @param {event} e
  */
-function betta_callCancel(e) {
+function betta_mail(e) {
   let btn = betta_elementOrClosestParentOfType(e.target, "BUTTON");
-  // change icon
-  btn.nextElementSibling.querySelector('img').src = '/icons/call_end.svg';
-  // hide phone number
-  btn.nextElementSibling.nextElementSibling.style.display = 'none';
-  // remove clicked from call btn
-  btn.nextElementSibling.classList.remove('clicked');
-  // hide cancel call btn
-  btn.style.display = 'none';
+
+  if (btn.classList.contains('clicked')) {
+    btn.classList.remove('clicked');
+    btn.querySelector('img').src = '/icons/email.svg';
+    btn.nextElementSibling.style.display = 'none';
+  } else {
+    try {
+      if (btn.previousElementSibling.previousElementSibling.classList.contains('clicked')) {
+        btn.previousElementSibling.previousElementSibling.classList.remove('clicked');
+        btn.previousElementSibling.previousElementSibling.querySelector('img').src = '/icons/phone_enabled.svg';
+        btn.previousElementSibling.style.display = 'none';
+      }
+    } catch { }
+
+    btn.classList.add('clicked');
+    // change icon
+    btn.querySelector('img').src = '/icons/mail_open.svg';
+    // show phone number
+    btn.nextElementSibling.style.display = 'block';
+
+  }
 }
+
+betta_listen(
+  document.querySelectorAll('button.email'),
+  'click',
+  betta_mail
+);
 // -------------------------------------------------------------------------------------------------
 
 // -------------------------------------------------------------------------------------------------
@@ -887,17 +925,18 @@ function betta_callCancel(e) {
  * @param {event} e
  */
 function betta_switchPicture(e) {
-  const btn = betta_elementOrClosestParentOfType(e.target, 'BUTTON');
-  const alt = btn.nextElementSibling.querySelector('.alt');
+  try {
+    const btn = betta_elementOrClosestParentOfType(e.target, 'BUTTON');
+    const alt = btn.nextElementSibling.querySelector('.alt');
 
-  if (alt.style.opacity != '1') {
-    alt.style.opacity = '1';
-    btn.querySelector('img').style.transform = 'scaleX(-1)';
-  } else {
-    alt.style.opacity = '0';
-    btn.querySelector('img').style.transform = 'scaleX(1)';
-  }
-
+    if (alt.style.opacity != '1') {
+      alt.style.opacity = '1';
+      btn.querySelector('img').style.transform = 'scaleX(-1)';
+    } else {
+      alt.style.opacity = '0';
+      btn.querySelector('img').style.transform = 'scaleX(1)';
+    }
+  } catch { }
 }
 
 betta_listen(
@@ -906,3 +945,67 @@ betta_listen(
   betta_switchPicture,
 );
 // -------------------------------------------------------------------------------------------------
+
+// -------------------------------------------------------------------------------------------------
+// Parallax scrolling
+// -------------------------------------------------------------------------------------------------
+let parallaxElements = document.querySelectorAll('.parallax-scroll');
+
+let viewportHeight = window.innerHeight;
+let dViewportTop = window.pageYOffset;
+let dViewportBottom = dViewportTop + viewportHeight;
+
+function parallax() {
+  parallaxElements.forEach(parallaxForElement);
+}
+
+function parallaxForElement(element) {
+  let dElementTop = element.getBoundingClientRect().top + window.pageYOffset;
+
+  transformElement(element, dElementTop);
+}
+
+//let element = document.querySelector('.parallax-scroll');
+//let dElementTop = element.getBoundingClientRect().top + window.pageYOffset;
+
+function inViewport(dElementTop) {
+  if (dElementTop < dViewportBottom) {
+    if (dElementTop > dViewportTop) {
+      return true;
+    } else {
+      return false;
+    }
+  } else {
+    return false;
+  }
+}
+
+/* should only return a value 0 to 1 */
+function calculateTransform(dElementTop) {
+  return (viewportHeight / (-(dViewportTop) + dElementTop));
+}
+
+function transformElement(element, dElementTop) {
+
+  if (inViewport(dElementTop)) {
+    let t = calculateTransform(dElementTop);
+
+    if (t > 25) {
+      t = 25;
+    }
+    element.style.transform = "translateY(" + t + "px)";
+    dElementTop = element.getBoundingClientRect().top + window.pageYOffset;
+  }
+}
+
+function scroll() {
+  dViewportTop = window.pageYOffset;
+  dViewportBottom = dViewportTop + viewportHeight;
+
+  parallax();
+}
+
+window.onscroll = function () {
+  scroll();
+};
+
