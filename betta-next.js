@@ -465,8 +465,10 @@ function betta_scroll(scroll = true) {
  */
 function betta_scrollMobile(scroll = true) {
   if (!scroll) {
+    document.querySelector('html').classList.add('no-scroll-mobile');
     document.querySelector('body').classList.add('no-scroll-mobile');
   } else {
+    document.querySelector('html').classList.remove('no-scroll-mobile');
     document.querySelector('body').classList.remove('no-scroll-mobile');
   }
 }
